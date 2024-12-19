@@ -1,0 +1,260 @@
+# Site Name (same as Python Namespace)
+site_name: {{ package['namespace'] }}
+
+# Site URL (same as Repository URL)
+site_url: "{{ package['repository_base_url'] }}"
+
+# Repository Name on GitHub
+repo_name: "{{ package['repository_name'] }}"
+
+# Repository URL
+repo_url: "{{ package['repository_base_url'] }}"
+
+# Documentation Source Files
+docs_dir: "docs/mkdocs/source"
+
+# Documentation Rendered Files
+site_dir: "docs/mkdocs/build"
+
+# Watch Files/Folder for Changes
+watch: [mkdocs.yml, src]
+
+# Add "index.html" to URL if use_directory_urls=false
+# (useful for Local Development without HTTP Server)
+use_directory_urls: false
+
+# Validation Settings
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+
+nav:
+# Defer to `gen-files` + `literate-nav`
+- API reference:
+  - mkdocstrings: reference/
+- Development:
+  # - Contributing: contributing.md
+  # - Code of Conduct: code_of_conduct.md
+  - Coverage report: coverage.md
+
+plugins:
+- search
+- gen-files:
+    scripts:
+    - scripts/gen_ref_nav.py
+- literate-nav:
+    nav_file: SUMMARY.md
+- coverage:
+    # Relative to site_dir
+    page_path: coverage
+
+    # Relative to Project Root
+    html_report_dir: coverage/html
+- mkdocstrings:
+    # Python is the Default Handler
+    default_handler: python
+
+    # Custom Templates to use
+    # Relative to Project Root
+    custom_templates: docs/mkdocs/templates
+
+    # Handlers
+    handlers:
+      python:
+        setup_commands:
+          - import os
+          - import sys
+          - from pathlib import Path
+          - sys.path.append('./')
+          - sys.path.append('./src')
+          - sys.path.insert(0, os.path.abspath(os.path.join('..', '..', '..', 'src')))
+          - sys.path.insert(0, os.path.abspath(os.path.join(os.getenv("PYTHONPATH"))))
+          - sys.path.insert(0, os.path.abspath(os.getenv("APP_SOURCE_TREE_PATH")))
+          - sys.path.insert(0, os.path.abspath(os.getenv("APP_DEVELOPMENT_TOOLS_VENV_PATH")))
+          - sys.path.append(os.path.abspath(os.path.join('..', '..', '..', 'src')))
+          - sys.path.append(os.path.abspath(os.getenv("PYTHONPATH")))
+          - sys.path.append(os.path.abspath(os.getenv("APP_SOURCE_TREE_PATH")))
+          - sys.path.append(os.path.abspath(os.getenv("APP_DEVELOPMENT_TOOLS_VENV_PATH")))
+          - sys.path.append(os.path.abspath(os.path.join(os.getenv("APP_SOURCE_TREE_PATH"), "lib", "site-packages")))
+          - sys.path.append(os.path.abspath(os.path.join(os.getenv("APP_DEVELOPMENT_TOOLS_VENV_PATH"), "lib", "site-packages")))
+          - # Add ALL .pth Search Paths for Editable Installs
+          -     files = Path(os.getenv("APP_DEVELOPMENT_TOOLS_VENV_PATH"), "lib", "site-packages").glob("**/*.pth")
+          -     for file in files:
+          -         with open(file, "r") as f:
+          -             content = f.read()
+          -             # Split Lines
+          -             lineItems = content.splitlines()
+          -             for lineItem in lineItems:
+          -                 if os.path.exists(lineItem):
+          -                     sys.path.append(lineItem)
+        # Intersphinx Configuration
+        # https://mkdocstrings.github.io/usage/#cross-references-to-other-projects-inventories
+        import:
+        - https://docs.python.org/3.12/objects.inv
+        #- https://installer.readthedocs.io/en/stable/objects.inv  # demonstration purpose in the docs
+        #- https://mkdocstrings.github.io/autorefs/objects.inv
+        #- https://www.mkdocs.org/objects.inv
+        #- https://python-markdown.github.io/objects.inv
+        paths: ["src"]
+        selection:
+          new_path_syntax: true
+        load_external_modules: false
+        options:
+          # Pre-load modules that are not specified directly in autodoc instructions
+          # For an imported member to be rendered, you need to add it to the __all__ attribute of the importing module.
+          # The package from which the imported object originates must be accessible to the handler (see Finding modules).
+          preload_modules: []
+
+          # When set to true, this option forces the use of the new object path syntax, which uses a colon (:) to delimit modules from other objects.
+          new_path_syntax: false
+
+          # When looking for documentation specified in autodoc instructions,
+          # also look for the stubs packageas defined in PEP 561 if it exists
+          find_stubs_package: true
+
+          # Use Google-Style Docstrings
+          docstring_style: google
+          docstring_options:
+            ignore_init_summary: false
+            trim_doctest_flags: false
+          merge_init_into_class: false
+          docstring_section_style: list
+          returns_multiple_items: true
+          returns_named_value: true
+          receives_multiple_items: true
+          receives_named_value: true
+          returns_type_in_property_summary: true
+          warn_unknown_params: true
+          show_if_no_docstring: true
+          filters: ["!^_"]
+          summary: true
+
+          # When rendering a module, show its submodules recursively.
+          # This is false by default, because most of the time we render only one module per page,
+          # and when rendering a package (a tree of modules and their members) on a single page, we quickly run out of heading levels.
+          show_submodules: false
+
+          # The initial heading level to use.
+          heading_level: 1
+
+          inherited_members: true
+
+          # Whether to render headings for function/method parameters
+          parameter_headings: true
+
+          separate_signature: true
+          line_length: 60
+          show_docstring_attributes: true
+          show_docstring_functions: true
+          show_docstring_classes: true
+          show_docstring_modules: true
+          show_docstring_description: true
+          show_docstring_examples: true
+          show_docstring_other_parameters: true
+          show_docstring_parameters: true
+          show_docstring_raises: true
+          show_docstring_receives: true
+          show_docstring_returns: true
+          show_docstring_warns: true
+          show_docstring_yields: true
+
+          # Show the heading of the object at the root of the documentation tree (i.e. the object referenced by the identifier after :::).
+          show_root_heading: false
+
+          # If the root heading is not shown, at least add a ToC entry for it.
+          show_root_toc_entry: false
+
+          # Show the full Python path for the root object heading.
+          show_root_full_path: false
+
+          # Show the full Python path of the root members.
+          show_root_members_full_path: false
+
+          # Show the full Python path of every object.
+          show_object_full_path: false
+
+          # When grouped by categories, show a heading for each category.
+          # These category headings will appear in the table of contents, allowing you to link to them using their permalinks.
+          show_category_heading: true
+
+          show_signature: true
+          show_signature_annotations: true
+          annotations_path: full
+
+          # Show Bases (Parents) of a Class
+          show_bases: true
+
+          # Show the source code of this object
+          show_source: true
+
+          # Prefix headings with "attr", "func", "meth", "class" or "mod" types
+          show_symbol_type_heading: true
+
+          # Prefix items in the ToC with "attr", "func", "meth", "class" or "mod" types
+          show_symbol_type_toc: true
+          signature_crossrefs: true
+          unwrap_annotated: true
+
+          # Import Module for Analysis
+          allow_inspection: true
+
+          # Only Insiders (Sponsorware) but enabled for Future Releases
+          modernize_annotations: true
+          show_inheritance_diagram: true
+
+          # Extensions
+          extensions:
+            - package.linkcode
+
+          # Extra Options for Python Handler
+          extra:
+            # e.g. Obtained via `git branch`
+            repo_branch: {{ package['repository_current_local_branch'] }}
+            
+            # e.g. Obtained via `git log -1 --format=%H`
+            repo_reference_long: {{ package['repository_current_reference_long'] }}
+            
+            # e.g. Obtained via `git log -1 --format=%h`
+            repo_reference_short: {{ package['repository_current_reference_short'] }}
+            
+            # Python Namespace
+            python_namespace: {{ package['namespace'] }}
+
+            # Show Link to Repository Source Code
+            show_source_link: true
+
+            # Label for Repository Source Code
+            source_link_label: GitHub Repository
+
+            # Description for Repository Source Code
+            source_link_description: View Source Code in Repository
+
+
+# Theme Configuration
+theme:
+  name: material
+# **Important**: these Settings are ONLY for MkDocs, NOT MkDocStrings !
+#                They are NOT passed to MkDocStrings "context" in rendering.py
+#   custom_dir: custom_theme/
+
+# Theming Options
+# Full Customization: https://www.mkdocs.org/user-guide/customizing-your-theme/#using-the-theme-custom_dir
+# Reference: https://www.mkdocs.org/user-guide/configuration/#theme
+# (Not currently implemented)
+
+# Small Customization to existing Themes: https://www.mkdocs.org/user-guide/customizing-your-theme/#using-the-docs_dir
+# Customizations CSS Files
+extra_css:
+  - extra.css
+
+# Customizations Javascript Files
+# extra_javascript:
+#  - extra.js
+
+# Extra Parameters
+# Reference: https://www.mkdocs.org/user-guide/configuration/#extra
+# **Important**: these Settings are ONLY for MkDocs, NOT MkDocStrings.
+#                They are NOT passed to MkDocStrings "context" in rendering.py
+# extra:
+#  
