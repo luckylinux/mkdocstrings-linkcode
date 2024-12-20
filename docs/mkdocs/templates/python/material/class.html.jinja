@@ -1,0 +1,22 @@
+{% extends "_base/class.html.jinja" %}
+
+{% block source scoped %}
+
+  {#- Add new Block <source_link> before the embedded Source Code <source> (after <summary). -#}
+  {% block source_link scoped %}
+    {#- source_link block.
+        
+    This block renders the Link to the Source Code in the Repository.
+    -#}
+    
+    {% if config.show_source_link and class.source_link %}
+      <div class="source-link class-source-link">
+        {{ config.source_link_label }}: <a href="{{ class.source_link }}">{{ config.source_link_description }}</a>
+      </div>
+    {% endif %}
+  {% endblock source_link %}
+
+  {#- Render Parent Template Original <source> Block. -#}
+  {{ super() }}
+
+{% endblock source %}

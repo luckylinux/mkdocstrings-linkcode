@@ -129,12 +129,18 @@ Context:
           {% endwith %}
         {% endblock docstring %}
 		
-		{% if config.show_source_link and function.source_link %}
-			<div class="source-link attribute-source-link">
-				{{ config.source_link_label }}: <a href="{{ function.source_link }}">{{ config.source_link_description }}</a>
-			</div>
-		{% endif %}
-
+        {% block source_link scoped %}
+          {#- source_link block.
+          
+          This block renders the Link to the Source Code in the Repository.
+          -#}
+          {% if config.show_source_link and function.source_link %}
+            <div class="source-link attribute-source-link">
+              {{ config.source_link_label }}: <a href="{{ function.source_link }}">{{ config.source_link_description }}</a>
+            </div>
+          {% endif %}
+        {% endblock source_link %}
+        
         {% block source scoped %}
           {#- Source block.
           

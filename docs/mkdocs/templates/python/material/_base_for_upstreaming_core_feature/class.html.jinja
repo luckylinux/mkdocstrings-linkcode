@@ -141,12 +141,6 @@ Context:
             {% endif %}
           {% endif %}
         {% endblock docstring %}
-			
-		{% if config.show_source_link and class.source_link %}
-			<div class="source-link class-source-link">
-				{{ config.source_link_label }}: <a href="{{ class.source_link }}">{{ config.source_link_description }}</a>
-			</div>
-		{% endif %}
 
         {% block summary scoped %}
           {#- Summary block.
@@ -155,6 +149,18 @@ Context:
           -#}
           {% include "summary"|get_template with context %}
         {% endblock summary %}
+
+        {% block source_link scoped %}
+          {#- source_link block.
+          
+          This block renders the Link to the Source Code in the Repository.
+          -#}
+          {% if config.show_source_link and class.source_link %}
+            <div class="source-link class-source-link">
+              {{ config.source_link_label }}: <a href="{{ class.source_link }}">{{ config.source_link_description }}</a>
+            </div>
+          {% endif %}
+        {% endblock source_link %}
 
         {% block source scoped %}
           {#- Source block.

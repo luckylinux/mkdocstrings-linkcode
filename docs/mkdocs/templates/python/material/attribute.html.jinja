@@ -1,0 +1,22 @@
+{% extends "_base/attribute.html.jinja" %}
+
+{% block contents scoped %}
+
+  {#- Render Parent Template Original <contents> Block. -#}
+  {{ super() }}
+
+  {#- Add new Block <source_link> at the end of Block <contents>. -#}
+  {% block source_link scoped %}
+    {#- source_link block.
+        
+    This block renders the Link to the Source Code in the Repository.
+    -#}
+
+    {% if config.show_source_link and attribute.source_link %}
+      <div class="source-link attribute-source-link">
+        {{ config.source_link_label }}: <a href="{{ attribute.source_link }}">{{ config.source_link_description }}</a>
+      </div>
+    {% endif %}
+  {% endblock source_link %}
+    
+{% endblock contents %}
