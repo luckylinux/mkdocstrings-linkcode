@@ -77,4 +77,6 @@ Some better CSS Stylesheets can/should be applied in the Future.
 # Extra Stylesheets
 An extra Stylesheet is located in `docs/mkdocs/source/extra.css`.
 
-This is NOT required for the Functionality, but makes it a bit easier to separate one Function/Method/Attribute from each Othe :wink:.
+This is NOT required for the Functionality, but makes it a bit easier to separate one Function/Method/Attribute from each Other :wink:.
+
+Another Customization is performed in `docs/mkdocs/source/emoji.css` in order to display the correct Repository Icon (currently only GitHub is implemented), since that is easier compared to computing multiple nested-Directories Paths in order to use Relative Paths to load the required Image Asset `../../../etc`.

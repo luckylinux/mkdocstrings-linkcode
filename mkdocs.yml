@@ -239,9 +239,9 @@ plugins:
 # Theme Configuration
 theme:
   name: material
-# **Important**: these Settings are ONLY for MkDocs, NOT MkDocStrings !
-#                They are NOT passed to MkDocStrings "context" in rendering.py
-#   custom_dir: custom_theme/
+  # **Important**: these Settings are ONLY for MkDocs, NOT MkDocStrings !
+  #                They are NOT passed to MkDocStrings "context" in rendering.py
+  custom_dir: docs/mkdocs/template_overrides
 
 # Theming Options
 # Full Customization: https://www.mkdocs.org/user-guide/customizing-your-theme/#using-the-theme-custom_dir
@@ -252,6 +252,7 @@ theme:
 # Customizations CSS Files
 extra_css:
   - extra.css
+  - emoji.css
 
 # Customizations Javascript Files
 # extra_javascript:
