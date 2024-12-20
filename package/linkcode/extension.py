@@ -60,22 +60,24 @@ class LinkToGitHubSource(griffe.Extension):
         **kwargs,
     ) -> None:
 
-        # Get Extra Settings Dictionary
+        # Get Settings Dictionary
         # This is a bit tricky because Jinja2 Template has only access to the Items under `plugins` -> `mkdocstrings` -> `handlers` -> `python` -> `options`
-        # The Jinja2 Template Renderer does NOT expose Context for MkDocs `extra` Parameter into MkDocStrings
+        # The Jinja2 Template Renderer does NOT expose Context for MkDocs own Parameters into MkDocStrings
+        # With the `yaml` Parser CONFIG_DATA Also makes MkDocs own Parameters Accessible so we can e.g. use `repo_url` as well as other Parameters
         plugins = CONFIG_DATA.get("plugins", {})
-        extra = None
+        repo_url = CONFIG_DATA['repo_url']
+        options = None
 
-        # Get the `extra` Dictionary (need to process like this because plugins can be a list[] of different Types, e.g. `str` and `dict`)
+        # Get the `options` Dictionary (need to process like this because plugins can be a list[] of different Types, e.g. `str` and `dict`)
         for item in plugins:
             if isinstance(item, dict):
                 key = list(item.keys())[0]
                 if key == "mkdocstrings":
                     content = item.get("mkdocstrings")
-                    extra = content.get("handlers", {}).get("python", {}).get("options", {}).get("extra", {})
+                    options = content.get("handlers", {}).get("python", {}).get("options", {})
 
         # Check if it's relevant to the Package we are Documenting / we want to Document (`python_namespace``)
-        if extra is not None and extra.get("python_namespace") in obj.canonical_path:
+        if options is not None and options.get("python_namespace") in obj.canonical_path:
             if isinstance(node, griffe.ObjectNode):
                 return  # Skip runtime objects, their docstrings are already right.
 
@@ -101,13 +103,13 @@ class LinkToGitHubSource(griffe.Extension):
                 file_relative_path = Path(obj.filepath).relative_to(Path().cwd())
 
                 # Set GitHub Link based on Branch Name
-                # setattr(obj, "source_link", f"{CONFIG_DATA['repo_url']}/tree/{extra.get('repo_branch')}/{file_relative_path}#L{line_start}-L{line_end}")
+                # setattr(obj, "source_link", f"{CONFIG_DATA['repo_url']}/tree/{options.get('repo_branch')}/{file_relative_path}#L{line_start}-L{line_end}")
 
                 # Set GitHub Link based on Short Commit Hash
-                # setattr(obj, "source_link", f"{CONFIG_DATA['repo_url']}/blob/{extra.get('repo_reference_short')}/{file_relative_path}#L{line_start}-L{line_end}")
+                # setattr(obj, "source_link", f"{CONFIG_DATA['repo_url']}/blob/{options.get('repo_reference_short')}/{file_relative_path}#L{line_start}-L{line_end}")
 
                 # Set GitHub Link based on Long Commit Hash
-                setattr(obj, "source_link", f"{CONFIG_DATA['repo_url']}/blob/{extra.get('repo_reference_long')}/{file_relative_path}#L{line_start}-L{line_end}")
+                setattr(obj, "source_link", f"{repo_url}/blob/{options.get('repo_reference_long')}/{file_relative_path}#L{line_start}-L{line_end}")
 
                 # Stop here
                 return

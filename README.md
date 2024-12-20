@@ -31,29 +31,35 @@ plugins:
           # ...
           # ...
 
+          ########################################################################
+          ################ SOURCE LINK CONFIGURATION PARAMETERS ##################
+          ########################################################################
+
+          # Repository Branch - e.g. e.g. Obtained via `git branch`
+          repo_branch: {{ package['repository_current_local_branch'] }}
+          
+          # Repository Reference Long Hash - e.g. Obtained via `git log -1 --format=%H`
+          repo_reference_long: {{ package['repository_current_reference_long'] }}
+          
+          # Repository Reference Short Hash - e.g. Obtained via `git log -1 --format=%h`
+          repo_reference_short: {{ package['repository_current_reference_short'] }}
+          
+          # Python Namespace
+          python_namespace: {{ package['namespace'] }}
+
+          # Show Link to Repository Source Code
+          show_source_link: true
+
+          # Label for Repository Source Code
+          source_link_label: GitHub Repository
+
+          ########################################################################
+          ######################## SOURCE LINK EXTENSION #########################
+          ########################################################################
+
           # Extensions
           extensions:
             - package.linkcode
-
-          # Extra Options for Python Handler
-          extra:
-            # e.g. Obtained via `git branch`
-            repo_branch: {{ package['repository_current_local_branch'] }}
-            
-            # e.g. Obtained via `git log -1 --format=%H`
-            repo_reference_long: {{ package['repository_current_reference_long'] }}
-            
-            # e.g. Obtained via `git log -1 --format=%h`
-            repo_reference_short: {{ package['repository_current_reference_short'] }}
-            
-            # Python Namespace
-            python_namespace: {{ package['namespace'] }}
-
-            # Show Link to Repository Source Code
-            show_source_link: true
-
-            # Label for Repository Source Code
-            source_link_label: GitHub Repository
 ```
 
 # Extension

@@ -203,33 +203,38 @@ plugins:
           modernize_annotations: true
           show_inheritance_diagram: true
 
+          ########################################################################
+          ################ SOURCE LINK CONFIGURATION PARAMETERS ##################
+          ########################################################################
+
+          # Repository Branch - e.g. Obtained via `git branch`
+          repo_branch: "user/develop"
+
+          # Repository Reference Long Hash - e.g. Obtained via `git log -1 --format=%H`
+          repo_reference_long: "c99ec3bc67db28d608112f8cb52b678bd2e3ee20"
+          
+          # Repository Reference Short Hash - e.g. Obtained via `git log -1 --format=%h`
+          repo_reference_short: "c99ec3b"
+          
+          # Python Namespace
+          python_namespace: "aaaa.bbbb.cccc.dddd"
+          
+          # Show Link to Repository Source Code
+          show_source_link: true
+
+          # Label for Repository Source Code
+          source_link_label: GitHub Repository
+
+          # Description for Repository Source Code
+          source_link_description: View Source Code in Repository
+
+          ########################################################################
+          ######################## SOURCE LINK EXTENSION #########################
+          ########################################################################
+
           # Extensions
           extensions:
             - package.linkcode
-
-          # Extra Options for Python Handler
-          extra:
-            # e.g. Obtained via `git branch`
-            repo_branch: "user/develop"
-
-            # e.g. Obtained via `git log -1 --format=%H`
-            repo_reference_long: "c99ec3bc67db28d608112f8cb52b678bd2e3ee20"
-            
-            # e.g. Obtained via `git log -1 --format=%h`
-            repo_reference_short: "c99ec3b"
-            
-            # Python Namespace
-            python_namespace: "aaaa.bbbb.cccc.dddd"
-            
-            # Show Link to Repository Source Code
-            show_source_link: true
-
-            # Label for Repository Source Code
-            source_link_label: GitHub Repository
-
-            # Description for Repository Source Code
-            source_link_description: View Source Code in Repository
-
 
 # Theme Configuration
 theme:

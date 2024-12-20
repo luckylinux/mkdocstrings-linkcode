@@ -142,9 +142,9 @@ Context:
           {% endif %}
         {% endblock docstring %}
 			
-		{% if config.extra.show_source_link and class.source_link %}
+		{% if config.show_source_link and class.source_link %}
 			<div class="source-link class-source-link">
-				{{ config.extra.source_link_label }}: <a href="{{ class.source_link }}">{{ config.extra.source_link_description }}</a>
+				{{ config.source_link_label }}: <a href="{{ class.source_link }}">{{ config.source_link_description }}</a>
 			</div>
 		{% endif %}
 
